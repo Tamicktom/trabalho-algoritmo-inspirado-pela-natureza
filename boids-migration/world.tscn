@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://dx353rg4gw5va"]
+[gd_scene load_steps=2 format=3 uid="uid://dx353rg4gw5va"]
+
+[ext_resource type="Script" path="res://world.gd" id="2_world_script"]
 
 [node name="World" type="Node2D"]
+script = ExtResource("2_world_script")
+
+[node name="BoidSpawner" type="Marker2D" parent="."]

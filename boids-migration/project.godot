@@ -11,8 +11,18 @@ config_version=5
 [application]
 
 config/name="boids-migration"
+run/main_scene="res://world.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1000
+window/size/viewport_height=800
+
+[global_group]
+
+boids="The default boids group"
 
 [rendering]
 
