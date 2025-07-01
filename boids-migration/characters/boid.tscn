@@ -14,7 +14,7 @@ rotation = 1.57079
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("1_dki50")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CharacterBody2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CharacterBody2D" groups=["boids"]]
 position = Vector2(5.49007, -1.02789e-05)
 rotation = 1.57079
 scale = Vector2(0.302931, 0.239316)

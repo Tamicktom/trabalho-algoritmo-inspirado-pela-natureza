@@ -41,14 +41,13 @@ func _ready() -> void:
 	velocity = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized() * MAX_SPEED
 	position = global_position
 	wander_angle = randf() * TAU
-	add_to_group("boids")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	# Get all boids in the scene
 	var boids = get_tree().get_nodes_in_group("boids");
-	var closer_boids = get_all_close_boids(boids, ALIGNMENT_RADIUS)
-	print("Boids in range: ", closer_boids.size())
+	var closer_boids = get_all_close_boids(boids, ALIGNMENT_RADIUS);
+	print("Boids in range: ", closer_boids.size());
 
 func _draw() -> void:
 	draw_center_point()
@@ -62,6 +61,6 @@ func get_all_close_boids(boids: Array, radius: float) -> Array:
 
 # draw the center point of the boid
 func draw_center_point() -> void:
-	draw_circle(Vector2.ZERO, 5, Color(1, 0, 0, 1))  # Draw a red circle at the center
-	draw_line(Vector2.ZERO, Vector2(10, 0), Color(0, 1, 0, 1), 2)  # Draw a green line to the right
-	draw_line(Vector2.ZERO, Vector2(0, -10), Color(0, 0, 1, 1), 2)  # Draw a blue line upwards
+	draw_circle(Vector2.ZERO, 5, Color(1, 0, 0, 1)) # Draw a red circle at the center
+	draw_line(Vector2.ZERO, Vector2(10, 0), Color(0, 1, 0, 1), 2) # Draw a green line to the right
+	draw_line(Vector2.ZERO, Vector2(0, -10), Color(0, 0, 1, 1), 2) # Draw a blue line upwards
