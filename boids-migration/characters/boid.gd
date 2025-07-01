@@ -1,6 +1,4 @@
-extends Node2D
-
-const SCALE: Vector2 = Vector2(1, 1);
+extends Node2D;
 
 const MAX_SPEED: float = 100.0;
 const MAX_FORCE: float = 10.0;
@@ -10,57 +8,44 @@ const MAX_SEPARATION_FORCE: float = 10.0;
 const MAX_WANDER_FORCE: float = 10.0;
 const MAX_WANDER_RADIUS: float = 10.0;
 
-# Boid properties
-var velocity: Vector2 = Vector2.ZERO;
-var acceleration: Vector2 = Vector2.ZERO;
-
-# Behavior weights
-const ALIGNMENT_WEIGHT: float = 1.0;
-const COHESION_WEIGHT: float = 1.0;
-const SEPARATION_WEIGHT: float = 1.5;
-const WANDER_WEIGHT: float = 0.5;
-const BOUNDARY_WEIGHT: float = 1.0;
-
-# Detection ranges
-const ALIGNMENT_RADIUS: float = 100.0;
-const COHESION_RADIUS: float = 100.0;
-const SEPARATION_RADIUS: float = 30.0;
-
-# World boundaries
-const WORLD_WIDTH: float = 512.0
-const WORLD_HEIGHT: float = 512.0
-const BOUNDARY_MARGIN: float = 50.0
-
-# Wander behavior
-var wander_angle: float = 0.0
-var wander_change: float = 0.3
+const WORLD_WIDTH = 512.0;
+const WORLD_HEIGHT = 512.0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# Initialize random velocity and position
-	velocity = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized() * MAX_SPEED
-	position = global_position
-	wander_angle = randf() * TAU
+	pass;
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	# Get all boids in the scene
-	var boids = get_tree().get_nodes_in_group("boids");
-	var closer_boids = get_all_close_boids(boids, ALIGNMENT_RADIUS);
-	print("Boids in range: ", closer_boids.size());
+	var current_position = position;
+	var forward_direction = Vector2.RIGHT.rotated(rotation);
+	var target_rotation = rotation;
+	
+	# Check if outside world boundaries
+	var world_center = Vector2(WORLD_WIDTH/2, WORLD_HEIGHT/2);
+	var is_outside = has_reached_right_edge() || has_reached_left_edge() || has_reached_top_edge() || has_reached_bottom_edge();
+	
+	if is_outside:
+		# Compute direction to world center
+		var to_center = world_center - current_position;
+		target_rotation = to_center.angle();
+	
+	# Smoothly interpolate rotation
+	rotation = lerp_angle(rotation, target_rotation, 0.1);
+	
+	# Update position based on smoothed rotation
+	forward_direction = Vector2.RIGHT.rotated(rotation);
+	var new_position = current_position + forward_direction * MAX_SPEED * _delta;
+	position = new_position;
 
-func _draw() -> void:
-	draw_center_point()
+func has_reached_right_edge() -> bool:
+	return position.x >= WORLD_WIDTH;
 
-func get_all_close_boids(boids: Array, radius: float) -> Array:
-	var close_boids = []
-	for boid in boids:
-		if boid != self and position.distance_to(boid.position) < radius:
-			close_boids.append(boid)
-	return close_boids
+func has_reached_left_edge() -> bool:
+	return position.x <= 0;
 
-# draw the center point of the boid
-func draw_center_point() -> void:
-	draw_circle(Vector2.ZERO, 5, Color(1, 0, 0, 1)) # Draw a red circle at the center
-	draw_line(Vector2.ZERO, Vector2(10, 0), Color(0, 1, 0, 1), 2) # Draw a green line to the right
-	draw_line(Vector2.ZERO, Vector2(0, -10), Color(0, 0, 1, 1), 2) # Draw a blue line upwards
+func has_reached_top_edge() -> bool:
+	return position.y >= WORLD_HEIGHT;
+
+func has_reached_bottom_edge() -> bool:
+	return position.y <= 0;
