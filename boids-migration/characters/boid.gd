@@ -11,23 +11,28 @@ const MAX_WANDER_RADIUS: float = 10.0;
 const WORLD_WIDTH = 512.0;
 const WORLD_HEIGHT = 512.0;
 
+var accelerationLine: Line2D = null;
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass;
+	# inside the Boid scene, we have an Line called AccelerationLine
+	accelerationLine = $AccelerationLine;
+	print(accelerationLine);
+	pass ;
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	var current_position = position;
-	var forward_direction = Vector2.RIGHT.rotated(rotation);
-	var target_rotation = rotation;
+	var current_position: Vector2 = position;
+	var forward_direction: Vector2 = Vector2.RIGHT.rotated(rotation);
+	var target_rotation: float = rotation;
 	
 	# Check if outside world boundaries
-	var world_center = Vector2(WORLD_WIDTH/2, WORLD_HEIGHT/2);
+	var world_center: Vector2 = Vector2(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
 	var is_outside = has_reached_right_edge() || has_reached_left_edge() || has_reached_top_edge() || has_reached_bottom_edge();
 	
 	if is_outside:
 		# Compute direction to world center
-		var to_center = world_center - current_position;
+		var to_center: Vector2 = world_center - current_position;
 		target_rotation = to_center.angle();
 	
 	# Smoothly interpolate rotation
@@ -35,7 +40,7 @@ func _process(_delta: float) -> void:
 	
 	# Update position based on smoothed rotation
 	forward_direction = Vector2.RIGHT.rotated(rotation);
-	var new_position = current_position + forward_direction * MAX_SPEED * _delta;
+	var new_position: Vector2 = current_position + forward_direction * MAX_SPEED * _delta;
 	position = new_position;
 
 func has_reached_right_edge() -> bool:

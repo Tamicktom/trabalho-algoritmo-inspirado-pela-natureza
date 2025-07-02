@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://cn7fpfcew7god"]
+[gd_scene load_steps=5 format=3 uid="uid://cn7fpfcew7god"]
 
 [ext_resource type="Texture2D" uid="uid://c4k3u17rddnws" path="res://characters/boid.png" id="1_dki50"]
 [ext_resource type="Script" path="res://characters/boid.gd" id="1_f8iu1"]
+
+[sub_resource type="Gradient" id="Gradient_ybfxh"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_w5qxx"]
+gradient = SubResource("Gradient_ybfxh")
 
 [node name="Boid" type="Node2D"]
 script = ExtResource("1_f8iu1")
@@ -9,16 +14,17 @@ script = ExtResource("1_f8iu1")
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
-position = Vector2(8, 0)
+position = Vector2(1.00003, -1.59161e-12)
 rotation = 1.57079
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("1_dki50")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CharacterBody2D" groups=["boids"]]
-position = Vector2(5.49007, -1.02789e-05)
+position = Vector2(-1.5099, -1.02789e-05)
 rotation = 1.57079
 scale = Vector2(0.302931, 0.239316)
 build_mode = 1
 polygon = PackedVector2Array(-20.3952, 19.3753, 6.41793e-05, -36.5979, 20.3951, 19.3754)
 
-[node name="AccelerationLine" type="Node2D" parent="."]
+[node name="AccelerationLine" type="Line2D" parent="."]
+texture = SubResource("GradientTexture1D_w5qxx")
